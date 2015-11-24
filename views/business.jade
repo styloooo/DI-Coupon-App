@@ -1,0 +1,41 @@
+extends layout
+
+block nav
+  li
+    a(href='/') Home
+  li
+    a(href="/businesses") Businesses
+  li(class="active")= business.name
+
+block map
+  div(id="map")
+
+block content
+  h1(class="h1")= business.name
+  p= business.about
+  p= business.address
+  p= business.phone
+
+  table(class="table table-hover")
+    each deal in deals
+      tr
+        td
+          a(href="../../deals/" + deal.id)= deal.title
+        td= deal.description
+        td Offer ends #{deal.active_ending}
+        each category in categories
+          if(category.id == deal.category_id)
+            td
+              a(href="/../../category/" + category.id)= category.name
+
+  script(type="text/javascript").
+    var map;
+    function initMap() {
+      var latLng = new google.maps.LatLng(#{business.lat}, #{business.lng});
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: latLng,
+        zoom: 15
+        });
+      }
+
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDB24e7kOuLgezvifYR5Qsgcx1afQmf94E&callback=initMap')

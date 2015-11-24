@@ -1,0 +1,14 @@
+extends business
+
+block map
+  div(id="map")
+
+  script(type="text/javascript").
+  var map;
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: #{business.lat}, lng: #{business.lng}},
+      zoom: 15
+    });}
+
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDB24e7kOuLgezvifYR5Qsgcx1afQmf94E&callback=initMap')

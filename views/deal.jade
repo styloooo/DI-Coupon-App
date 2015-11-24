@@ -1,0 +1,47 @@
+extends layout
+
+block map
+  div(id="map")
+
+block content
+  h1(class="h1")= deal.title
+  dl
+    dt Business
+    dd
+      a(href='../businesses/'+business.id)= business.name
+    dt Description
+    dd= deal.description
+    dt Address
+    dd= business.address
+    dt Category
+    dd
+      a(href='/category/' + category.id)= category.name
+    dt Deal Began
+    dd= deal.active_starting
+    dt Deal Ends
+    dd= deal.active_ending
+
+
+
+  script(type="text/javascript").
+    var map;
+    var lat = #{business.lat};
+    var lng = #{business.lng};
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: lat, lng: lng},
+        zoom: 16
+      });
+      addMarker();
+    }
+
+    function addMarker(){
+      myLatLng = new google.maps.LatLng(lat, lng);
+      var marker = new google.maps.Marker({
+        position: myLatLng,
+        title: "#{business.name}",
+        map: map
+      });
+    }
+
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDB24e7kOuLgezvifYR5Qsgcx1afQmf94E&callback=initMap')

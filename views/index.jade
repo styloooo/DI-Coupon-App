@@ -1,0 +1,64 @@
+extends layout
+    
+block map
+  div(id="splashMap")
+
+  script(type="text/javascript").
+    var map;
+    function initMap() {
+      var latLng = new google.maps.LatLng(#{deals[0].lat}, #{deals[0].lng});
+      map = new google.maps.Map(document.getElementById('splashMap'), {
+        center: latLng,
+        zoom: 10,
+        disableDefaultUI: true,
+        streetViewControl: false,
+        mapTypeControl: false
+        });
+        addMarkers();
+      }
+
+    var deals = !{JSON.stringify(deals)};
+    var markers = [];
+
+    function addMarkers() {
+      for(var i = 0; i < deals.length; i++){
+        var lat = deals[i].lat;
+        //console.log(lat);
+        var lng = deals[i].lng;
+        //console.log(lng);
+        var name = deals[i].title;
+        var dealId = deals[i].id;
+        console.log(deals[i].title);
+
+        myLatLng = new google.maps.LatLng(lat, lng);
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          title: name,
+          url: '/deals/' + dealId,
+          map: map
+        });
+
+        console.log(marker);
+
+        markers.push(marker);
+      }
+      makeInfo(markers);
+    }
+
+
+    function makeInfo(markers){
+      var infowindow = new google.maps.InfoWindow();
+      
+        for(var i = 0; i < markers.length; i++){
+          google.maps.event.addListener(markers[i], 'click', function (){
+            infowindow.setContent('<a href="'+this.url+'">'+this.title+'</a>');
+            infowindow.open(map, this);
+          });
+        }
+    }
+
+
+  
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDB24e7kOuLgezvifYR5Qsgcx1afQmf94E&callback=initMap')
+

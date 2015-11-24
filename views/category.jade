@@ -1,0 +1,16 @@
+extends layout
+
+block nav
+  li
+    a(href='/') Home
+  li
+    a(href='/category/') Categories
+  li(class='Active')= category.name 
+
+
+block content
+  h1= category.name
+  ul
+    each deal in deals
+      li
+        a(href='../../deals/' + deal.id)= deal.title

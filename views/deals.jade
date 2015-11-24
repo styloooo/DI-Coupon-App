@@ -1,0 +1,28 @@
+extend layout
+
+block nav
+  li
+    a(href="/") Home
+  li(class="active") Deals
+  li
+    a(href="/businesses") Businesses
+
+block content
+  div(id="header")
+      h1= title
+      p(class="lead") #{message} Welcome to #{title}
+      
+      table(class="table table-hover")
+        tr(class="tableHead")
+          td Deal
+          td Description
+          td Sponsor
+        each deal in deals
+          tr
+            td
+              a(href="/deals/" + deal.id)= deal.title
+            td= deal.description
+            each business in businesses
+              if(business.id == deal.business_id)
+                td
+                  a(href="/businesses/" + business.id)= business.name
